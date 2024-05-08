@@ -1,0 +1,8 @@
+# Types
+__pycache__/
+*.pyc
+*.wav
+*.env
+
+# Directories
+.idea/
