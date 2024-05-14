@@ -9,6 +9,7 @@ sounddevice = "*"
 numpy = "*"
 scipy = "*"
 openai = "*"
+aiofiles = "*"
 
 [dev-packages]
 

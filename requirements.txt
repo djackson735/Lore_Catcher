@@ -1,0 +1,5 @@
+asyncio~=3.4.3
+sounddevice~=0.4.6
+numpy~=1.26.4
+scipy~=1.13.0
+openai~=1.30.1
