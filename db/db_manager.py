@@ -1,4 +1,5 @@
 import sqlite3
+import db.default_prompts as default_prompts
 
 
 class DatabaseManager:
@@ -24,6 +25,11 @@ class DatabaseManager:
                 prompt TEXT
             )
         ''')
+
+        # Insert default prompts
+        for name, prompt in default_prompts.prompts:
+            cursor.execute('INSERT INTO prompts (name, prompt) VALUES (?, ?)', (name, prompt))
+
         conn.commit()
         conn.close()
 
@@ -44,7 +50,7 @@ class DatabaseManager:
         conn.commit()
         conn.close()
 
-    def get_recent_summaries(self, limit = 5):
+    def get_recent_summaries(self, limit=5):
         conn = self.get_db_connection()
         cursor = conn.cursor()
         cursor.execute('SELECT summary FROM summaries ORDER BY timestamp DESC LIMIT ?', (limit,))

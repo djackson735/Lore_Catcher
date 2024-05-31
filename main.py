@@ -1,5 +1,6 @@
 import asyncio
 from audio.audio_manager import AudioManager
+from db.db_manager import DatabaseManager
 from transcription.transcriber import Transcriber
 from analysis.analyzer import Analyzer
 import openai
@@ -29,7 +30,8 @@ async def main():
 
     analyzer = Analyzer(
         transcript_queue=transcript_queue,
-        client=client)
+        client=client,
+        db_manager=db_manager)
 
     audio_manager.start_recording_thread()
 
@@ -41,5 +43,5 @@ async def main():
 
 
 if __name__ == "__main__":
-    # Run the asyncio event loop for other tasks
+    db_manager = DatabaseManager()
     asyncio.run(main())
