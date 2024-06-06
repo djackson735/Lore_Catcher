@@ -25,6 +25,13 @@ class DatabaseManager:
                 prompt TEXT
             )
         ''')
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS transcripts (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                transcript TEXT
+            )
+        ''')
 
         # Insert default prompts
         for name, prompt in default_prompts.prompts:
@@ -36,19 +43,34 @@ class DatabaseManager:
     def get_db_connection(self):
         return sqlite3.connect(self.db_name)
 
-    def insert_summary(self, summary):
-        conn = self.get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute('INSERT INTO summaries (summary) VALUES (?)', (summary,))
-        conn.commit()
-        conn.close()
-
     def insert_prompt(self, name, prompt):
         conn = self.get_db_connection()
         cursor = conn.cursor()
         cursor.execute('INSERT INTO prompts (name, prompt) VALUES (?, ?)', (name, prompt))
         conn.commit()
         conn.close()
+
+    def insert_transcript(self, transcript):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO transcripts (transcript) VALUES (?)', (transcript,))
+        conn.commit()
+        conn.close()
+
+    def insert_formatted_summary(self, formatted_summary):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO summaries (summary) VALUES (?)', (formatted_summary,))
+        conn.commit()
+        conn.close()
+
+    def get_recent_transcripts(self, limit=5):
+        conn = self.get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute('SELECT transcript FROM transcripts ORDER BY timestamp DESC LIMIT ?', (limit,))
+        transcripts = cursor.fetchall()
+        conn.close()
+        return [transcript[0] for transcript in transcripts]
 
     def get_recent_summaries(self, limit=5):
         conn = self.get_db_connection()

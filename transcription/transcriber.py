@@ -2,10 +2,11 @@ import datetime
 
 
 class Transcriber:
-    def __init__(self, file_queue, transcript_queue, client):
+    def __init__(self, file_queue, transcript_queue, client, db_manager):
         self.file_queue = file_queue
         self.transcript_queue = transcript_queue
         self.client = client
+        self.db_manager = db_manager
 
     async def transcribe_audio(self):
         while True:
@@ -20,6 +21,7 @@ class Transcriber:
                     response_format="text"
                 )
                 print(f"Transcript: {transcript}")
+                self.db_manager.insert_transcript(transcript)
                 await self.transcript_queue.put(transcript)
 
             except Exception as e:

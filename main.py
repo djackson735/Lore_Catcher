@@ -26,7 +26,8 @@ async def main():
     transcriber = Transcriber(
         file_queue=file_queue,
         transcript_queue=transcript_queue,
-        client=client)
+        client=client,
+        db_manager=db_manager)
 
     analyzer = Analyzer(
         transcript_queue=transcript_queue,
@@ -37,8 +38,8 @@ async def main():
 
     save_task = asyncio.create_task(audio_manager.save_audio())
     transcribe_task = asyncio.create_task(transcriber.transcribe_audio())
-    summarize_task = asyncio.create_task(analyzer.summarize_transcript())
-
+    # summarize_task = asyncio.create_task(analyzer.summarize_transcript())
+    summarize_task = asyncio.create_task(analyzer.summarize_with_context())
     await asyncio.gather(save_task, transcribe_task, summarize_task)
 
 
