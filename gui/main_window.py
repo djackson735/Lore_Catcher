@@ -3,9 +3,10 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget, QVBoxLayout, QHB
 import sys
 
 
-class LoreCatcher(QMainWindow):
-    def __init__(self):
+class MainWindow(QMainWindow):
+    def __init__(self, audio_manager, *args, **kwargs):
         super().__init__()
+        self.audio_manager = audio_manager
 
         self.setWindowTitle("Lore Catcher")
         self.setGeometry(100, 100, 800, 600)
@@ -30,13 +31,13 @@ class LoreCatcher(QMainWindow):
         main_layout.addWidget(self.scroll_area)
 
         # Buttons
-        self.start_button = QPushButton("Start Recording")
-        self.stop_button = QPushButton("Stop Recording")
-        self.pause_button = QPushButton("Pause")
+        self.start_recording_btn = QPushButton("Start Recording")
+        self.stop_recording_btn = QPushButton("Stop Recording")
+        self.pause_recording_btn = QPushButton("Pause")
 
-        button_layout.addWidget(self.start_button)
-        button_layout.addWidget(self.stop_button)
-        button_layout.addWidget(self.pause_button)
+        button_layout.addWidget(self.start_recording_btn)
+        button_layout.addWidget(self.stop_recording_btn)
+        button_layout.addWidget(self.pause_recording_btn)
 
         # Buttons to Layout
         main_layout.addLayout(button_layout)
@@ -55,21 +56,9 @@ class LoreCatcher(QMainWindow):
         exit_action.triggered.connect(self.close)
 
         # Connect buttons to methods
-        self.start_button.clicked.connect(self.start_recording)
-        self.stop_button.clicked.connect(self.stop_recording)
-        self.pause_button.clicked.connect(self.pause_recording)
-
-    def start_recording(self):
-        # Placeholder method for starting recording
-        pass
-
-    def stop_recording(self):
-        # Placeholder method for stopping recording
-        pass
-
-    def pause_recording(self):
-        # Placeholder method for pausing recording
-        pass
+        self.start_recording_btn.clicked.connect(self.audio_manager.start_recording_thread)
+        # self.stop_recording_btn.clicked.connect(self.stop_recording_btn)
+        # self.pause_recording_btn.clicked.connect(self.pause_recording_btn)
 
     def append_summary(self, summary):
         # Create a new label for the summary
@@ -86,10 +75,10 @@ class LoreCatcher(QMainWindow):
     def auto_scroll(self):
         self.scroll_area.verticalScrollBar().setValue(self.scroll_area.verticalScrollBar().maximum())
 
-
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    window = LoreCatcher()
-    window.show()
-    sys.exit(app.exec_())
+    # def run_gui(self):
+    #     print("Running GUI")
+    #     app = QApplication(sys.argv)
+    #
+    #     window = MainWindow(self.audio_manager)
+    #     window.show()
+    #     sys.exit(app.exec_())

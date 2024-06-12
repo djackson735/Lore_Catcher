@@ -31,6 +31,8 @@ class AudioManager:
         stream.start()
 
         while True:
+            print(f"{datetime.datetime.now()} - File Queue Status: {self.file_queue.qsize()}"
+                  f" - Audio Chunk Queue Status: {self.audio_chunk_queue.qsize()}")
             print(f"{datetime.datetime.now()} - RECORDING started")
             print(f"RECORDING chunk {chunk_number}...")
             recording, _ = stream.read(int(self.duration * self.samplerate))
