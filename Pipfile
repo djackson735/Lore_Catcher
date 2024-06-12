@@ -11,6 +11,7 @@ scipy = "*"
 openai = "*"
 aiofiles = "*"
 pyqt5 = "*"
+qasync = "*"
 
 [dev-packages]
 
