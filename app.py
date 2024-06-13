@@ -31,6 +31,7 @@ class Application:
             db_manager=self.db_manager)
 
     async def start_recording(self):
+        self.audio_manager.is_recording = True
         self.audio_manager.start_recording_thread()
         save_task = asyncio.create_task(self.audio_manager.save_audio())
         transcribe_task = asyncio.create_task(self.transcriber.transcribe_audio())
